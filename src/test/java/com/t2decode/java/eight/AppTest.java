@@ -5,6 +5,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static junit.framework.Assert.assertEquals;
@@ -14,6 +15,8 @@ import static junit.framework.Assert.assertEquals;
  * From: http://iporsut.blogspot.com/2014/03/l-99-p09-java-lambda.html
  */
 public class AppTest {
+
+
 
     public List<List<Character>> pack(List<Character> input) {
         List<List<Character>> result = new ArrayList<>();
@@ -31,20 +34,21 @@ public class AppTest {
         return result;
     }
 
-
     @Test
     public void spikeLambdaMap() {
-        List<Character> input = Arrays.asList('a','a','a','a','a','b','c','c','d','e','e','e','e');
+        List<Character> input = charList("a a a a a b c c d e e e e");
 
-        List<List<Character>> expect = new ArrayList<>();
-        expect.add(Arrays.asList('a','a','a','a','a'));
-        expect.add(Arrays.asList('b'));
-        expect.add(Arrays.asList('c','c'));
-        expect.add(Arrays.asList('d'));
-        expect.add(Arrays.asList('e','e','e','e'));
+        List<List<Character>> expect = Arrays.asList(
+            charList("a a a a a"),
+            charList("b"),
+            charList("c c"),
+            charList("d"),
+            charList("e e e e")
+        );
 
         assertEquals(expect, pack(input));
     }
+
 
     @Test
     public void spikeLambdaMapWithDuplicateEntriesInOtherPosition() {
@@ -63,11 +67,11 @@ public class AppTest {
     }
 
     private List<Character> charList(String str) {
-        List<String> tokens = Arrays.asList(str.split("\\s"));
-        List<Character> inputList = new ArrayList<>();
-        for (String token : tokens) {
-            inputList.add(token.charAt(0));
-        }
-        return inputList;
+        return Arrays.stream(
+                    str.split("\\s")
+               )
+               .map(STRING_TO_CHAR_MAPPER)
+               .collect(Collectors.toList());
     }
+    public static final Function<String, Character> STRING_TO_CHAR_MAPPER = token -> token.charAt(0);
 }
