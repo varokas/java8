@@ -35,13 +35,13 @@ public class LambaSyntaxTest {
         Integer result = input * input;
 
         Stream.of(
-                squareFuncAnonymous,
-                squareFuncLambda,
-                squareFuncLambdaTyped,
-                squareFuncLambdaShort,
-                squareFuncLambdaNoParenthesis
-        ).forEach(
-                f -> assertEquals(result, f.aMethod(input))
+            squareFuncAnonymous,
+            squareFuncLambda,
+            squareFuncLambdaTyped,
+            squareFuncLambdaShort,
+            squareFuncLambdaNoParenthesis
+        ).forEach( f ->
+            assertEquals(result, f.aMethod(input))
         );
     }
 }
